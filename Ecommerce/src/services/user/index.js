@@ -1,11 +1,12 @@
     import { User } from "../../model/user.js"
     import bcrypt from "bcryptjs"
+    import { encryptPassword } from "../../utils/auth.js";
     const createUser=async(userData)=>{
         try{
-            const salt=await bcrypt.genSalt(10)
-            const hashedPassword=await bcrypt.hash(userData.password,salt)
-        userData.password=hashedPassword
-        const user=(await User.create(userData)).toJSON();//convert into the normal js objects.
+        // userData.password= await encryptPassword(userData.password)
+        // const user=(await User.create(userData)).toJSON();//convert into the normal js objects.
+
+        const user=(await User.create({...userData,password: await encryptPassword(userData.password)})).toJSON()
         const {password,...userWithoutPassword}=user //rest operator 
         return userWithoutPassword;
         }catch(error){
@@ -33,6 +34,18 @@
         }
     }
 
+ const getUserByEmail=async(email)=>{
+    try {
+        const user=await User.findOne({where:{email}})
+        if(!user){
+            return null
+        }
+        return user
+    } catch (error) {
+        console.error('Error fetching user by email',error)
+    }
+ }
 
 
-    export {createUser,loginUser}
+
+export {createUser,loginUser,getUserByEmail}
