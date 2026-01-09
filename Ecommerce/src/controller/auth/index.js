@@ -16,6 +16,8 @@ const signUpController=async(req,res,next)=>{
     res.status(200).json({success:true,message:'User Signed Up',data:user})
 }
 
+
+
 //this is the login 
 const loginController=async(req,res,next)=>{
    const {email,password}=req.body;
