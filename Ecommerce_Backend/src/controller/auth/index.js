@@ -48,7 +48,7 @@ const loginController=async(req,res,next)=>{
      sameSite:'strict',
    })
 
-    res.status(200).json({success:true,message:'User logged in',data:jwtToken})
+    res.status(200).json({success:true,message:'User logged in',data:{id:user.id,name:user.name,email:user.email,type:user.type}})
 }
 
 export {signUpController,loginController}

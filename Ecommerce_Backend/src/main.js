@@ -10,7 +10,12 @@
   import { getProductsControllerForUser, getSingleProductForCustomer } from './controller/products/index.js'
  
   const app = express()
-  app.use(cors())
+  // app.use(cors())
+  app.use(cors({
+      origin:'http://localhost:5173',
+      methods:['GET','POST','PUT','DELETE'],
+    credentials:true
+  }))
   app.use(express.json())
   app.use(express.urlencoded({extended: true}))
   app.use(cookieParser())
@@ -27,7 +32,7 @@
   app.use('/auth',authRouter)
   app.use('/products', getProductsControllerForUser)
   app.use('/products/:id',getSingleProductForCustomer)
-  
+
   app.use(isProtectedRoute) //aaba muni ko route ma apply hunxa 
   
   app.use('/vendor',isVendor,vendorRouter)
